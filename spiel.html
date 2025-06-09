@@ -17,6 +17,16 @@
 
     <canvas id="fireworks-canvas"></canvas>
 
+    <!-- NEU: Modal für die Lösungsanzeige -->
+    <div id="solution-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h3>Zeit abgelaufen!</h3>
+            <p>Die richtige Lösung lautet:</p>
+            <p id="modal-solution-text" class="modal-solution"></p>
+            <button id="modal-close-button">Weiter zur nächsten Station</button>
+        </div>
+    </div>
+
     <div class="game-container">
         <!-- Header mit Stoppuhr und QR-Code -->
         <header class="game-header">
@@ -31,7 +41,6 @@
             <h2 id="station-name">Station wird geladen...</h2>
             
             <img id="station-image" src="" alt="Bild der Station" class="station-image">
-            <!-- NEU: Platzhalter für die Bild-Fehlermeldung -->
             <p id="image-error" class="image-error-text" style="display: none;"></p>
             
             <p id="station-description"></p>
