@@ -1,0 +1,163 @@
+/* style.css - Design für die Dorfrallye Willinghusen */
+
+/* Grundlegende Stile und Schriftart */
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    background-color: #f0f4f9; /* Helles Blau, ähnlich Google Tasks */
+    color: #1f2937; /* Dunkler Text für Lesbarkeit */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Container für das Hintergrundbild */
+.background-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* WICHTIG: Pfad zum Bild anpassen. Muss im 'img' Unterverzeichnis sein. */
+    background-image: url('img/hintergrund_schulhof.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -2;
+}
+
+/* Overlay für bessere Lesbarkeit des Textes */
+.background-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4); /* Dunkles Overlay */
+    z-index: -1;
+}
+
+/* Haupt-Content-Wrapper */
+.content-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 1.5rem; /* 24px */
+}
+
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Bereich für den Haupttitel */
+.hero-section {
+    color: #ffffff; /* Weißer Text auf dem Bild */
+}
+
+.hero-title {
+    font-size: 2.5rem; /* 40px */
+    font-weight: 900;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.hero-subtitle {
+    font-size: 1.875rem; /* 30px */
+    font-weight: 700;
+    color: #a7c7fa; /* Helles Blau für den Untertitel */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+.info-box {
+    margin-top: 2rem; /* 32px */
+    background-color: rgba(17, 24, 39, 0.6); /* Dunkler, halbtransparenter Hintergrund */
+    backdrop-filter: blur(5px); /* Weichzeichner-Effekt */
+    padding: 1.5rem; /* 24px */
+    border-radius: 0.75rem; /* 12px */
+    max-width: 32rem; /* 512px */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Footer-Styling */
+.footer {
+    width: 100%;
+    text-align: center;
+    color: #ffffff;
+    padding-top: 2rem;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem; /* 32px */
+    max-width: 56rem; /* 896px */
+    margin: 0 auto;
+}
+
+/* Karten im Footer (Spende & Impressum) */
+.footer-card {
+    background-color: rgba(31, 41, 55, 0.7); /* Noch dunklerer Hintergrund */
+    backdrop-filter: blur(5px);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-card h3 {
+    font-size: 1.125rem; /* 18px */
+    font-weight: 700;
+    margin-bottom: 0.5rem; /* 8px */
+    color: #dbeafe; /* Sehr helles Blau */
+}
+
+.card-text {
+    font-size: 0.875rem; /* 14px */
+    margin-bottom: 1rem;
+    color: #bfdbfe;
+    max-width: 300px;
+}
+
+.card-link {
+    color: #60a5fa; /* Helleres Blau für Links */
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.card-link:hover {
+    text-decoration: underline;
+}
+
+.qr-code {
+    width: 144px;
+    height: 144px;
+    border-radius: 0.5rem;
+    border: 4px solid white;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 0.5rem;
+}
+
+.copyright-text {
+    font-size: 0.75rem; /* 12px */
+    color: #9ca3af; /* Grauton */
+    margin-top: 1rem;
+}
+
+/* Responsive Design für größere Bildschirme */
+@media (min-width: 768px) {
+    .hero-title {
+        font-size: 4rem; /* 64px */
+    }
+    .hero-subtitle {
+        font-size: 2.5rem; /* 40px */
+    }
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

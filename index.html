@@ -5,59 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dorfrallye Willinghusen</title>
     
-    <!-- Tailwind CSS for styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     
-    <style>
-        /* Using the Inter font family */
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        /* Style for the semi-transparent overlay to ensure text readability */
-        .bg-overlay::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5); /* Black overlay with 50% opacity */
-            z-index: 1;
-        }
-        /* Ensure content is above the overlay */
-        .content-container {
-            position: relative;
-            z-index: 2;
-        }
-    </style>
+    <!-- Link zur externen CSS-Datei -->
+    <link rel="stylesheet" href="style.css">
+
 </head>
-<body class="bg-gray-900 text-white">
+<body>
 
     <!-- Background Image Container -->
-    <!-- WICHTIG: Ersetzen Sie 'img/hintergrund_startseite.jpg' mit dem korrekten Pfad zu Ihrem Bild. -->
-    <!-- Ich habe einen Platzhalter von placehold.co verwendet, damit Sie das Layout sehen können. -->
-    <div class="fixed inset-0 bg-cover bg-center bg-no-repeat bg-overlay" 
-         style="background-image: url('https://placehold.co/1920x1080/666/fff?text=Hintergrundbild+Willinghusen');"
-         onerror="this.style.backgroundImage='url(\'https://placehold.co/1920x1080/cccccc/333333?text=Bild+nicht+gefunden\')'">
-    </div>
+    <!-- Das Hintergrundbild wird jetzt über die style.css gesteuert -->
+    <div class="background-container"></div>
 
     <!-- Main Content -->
-    <div class="content-container flex flex-col min-h-screen">
-        <main class="flex-grow flex items-center justify-center text-center p-6">
-            <div>
-                <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-4 text-shadow-lg">
-                    Willkommen zur Dorfrallye
-                </h1>
-                <p class="text-2xl md:text-4xl font-bold text-yellow-300">
-                    Willinghusen
-                </p>
-                <div class="mt-8 bg-black bg-opacity-50 p-6 rounded-lg max-w-md mx-auto">
-                     <p class="text-lg">
+    <div class="content-container">
+        <main class="main-content">
+            <div class="hero-section">
+                <h1 class="hero-title">Willkommen zur Dorfrallye</h1>
+                <p class="hero-subtitle">Willinghusen</p>
+                <div class="info-box">
+                     <p>
                         Schön, dass ihr dabei seid! Erkundet unser Dorf, löst die Rätsel und findet die versteckten QR-Codes. Viel Spaß und Erfolg!
                     </p>
                 </div>
@@ -65,35 +35,32 @@
         </main>
 
         <!-- Footer -->
-        <footer class="w-full p-6 text-center">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center max-w-4xl mx-auto">
+        <footer class="footer">
+            <div class="footer-grid">
                 
                 <!-- Coffee Donation Section -->
-                <div class="flex flex-col items-center">
-                    <h3 class="text-lg font-bold mb-2">Eine kleine Kaffeespende?</h3>
-                    <p class="text-sm mb-4">Wenn euch die Rallye gefällt, könnt ihr dem Organisator einen Kaffee spendieren.</p>
-                    <!-- 
-                        QR Code für die Spende. 
-                        Dieser QR-Code verlinkt auf feierabend.netlify.app. 
-                        Sie können ihn durch einen eigenen ersetzen. Generieren Sie einfach einen QR-Code für Ihre gewünschte URL 
-                        (z.B. Ihre PayPal.me-URL) und ersetzen Sie die src.
-                    -->
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://feierabend.netlify.app" 
-                         alt="QR Code für eine Kaffeespende" 
-                         class="rounded-lg w-36 h-36 border-4 border-white shadow-lg">
-                    <a href="https://feierabend.netlify.app" target="_blank" class="text-sm mt-2 text-yellow-300 hover:underline">
-                        (oder hier klicken)
+                <div class="footer-card">
+                    <h3>Eine kleine Kaffeespende?</h3>
+                    <p class="card-text">Wenn euch die Rallye gefällt, könnt ihr dem Organisator einen Kaffee spendieren.</p>
+                    <a href="https://paypal.me/mischolz" target="_blank" rel="noopener noreferrer">
+                        <img src="img/qrcode.png" 
+                             alt="QR Code für eine Kaffeespende" 
+                             class="qr-code"
+                             onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://paypal.me/mischolz';">
+                    </a>
+                    <a href="https://paypal.me/mischolz" target="_blank" rel="noopener noreferrer" class="card-link">
+                        Kaffeespende
                     </a>
                 </div>
 
                 <!-- Imprint Section -->
-                <div class="flex flex-col items-center justify-center">
-                    <h3 class="text-lg font-bold mb-2">Rechtliches</h3>
+                <div class="footer-card">
+                    <h3>Rechtliches</h3>
                     <!-- WICHTIG: Verlinken Sie hier auf Ihre Impressums-Seite -->
-                    <a href="#impressum" class="text-yellow-300 hover:underline">
+                    <a href="#impressum" class="card-link">
                         Impressum & Datenschutz
                     </a>
-                    <p class="text-xs mt-4 text-gray-400">
+                    <p class="copyright-text">
                         Entwickelt für die Dorfgemeinschaft Willinghusen.
                     </p>
                 </div>
