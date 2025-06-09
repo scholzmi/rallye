@@ -1,3 +1,5 @@
 {
-    "hintIntervalSeconds": 5
+    "hintIntervalSeconds": 5,
+    "revealSolutionDelaySeconds": 30
 }
+

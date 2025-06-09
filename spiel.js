@@ -1,18 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // HTML-Elemente für den Zugriff speichern
+    // HTML-Elemente
     const stopwatchElement = document.getElementById('stopwatch');
     const stationNameElement = document.getElementById('station-name');
     const stationImageElement = document.getElementById('station-image');
-    const imageErrorElement = document.getElementById('image-error'); // NEU
+    const imageErrorElement = document.getElementById('image-error');
     const stationDescriptionElement = document.getElementById('station-description');
-    const hintBoxes = [
-        document.getElementById('hint-1'),
-        document.getElementById('hint-2'),
-        document.getElementById('hint-3'),
-        document.getElementById('hint-4'),
-        document.getElementById('hint-5'),
-    ];
+    const hintBoxes = Array.from(document.querySelectorAll('.hint-box'));
     const progressBar = document.getElementById('hint-progress-bar');
     const progressText = document.getElementById('progress-text');
     const solutionInput = document.getElementById('solution-input');
@@ -23,24 +17,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const finalTimeElement = document.getElementById('final-time');
     const fireworksCanvas = document.getElementById('fireworks-canvas');
     const ctx = fireworksCanvas.getContext('2d');
+    const solutionModal = document.getElementById('solution-modal');
+    const modalSolutionText = document.getElementById('modal-solution-text');
+    const modalCloseButton = document.getElementById('modal-close-button');
     
-    // Audio-Elemente laden
+    // Audio-Elemente
     const soundCorrect = document.getElementById('audio-correct');
     const soundWrong = document.getElementById('audio-wrong');
     const soundWin = document.getElementById('audio-win');
 
-    let particles = [];
-    let stations = [];
-    let config = {};
-    let currentStationIndex = 0;
-    let revealedHints = 0;
-    let hintTimer, progressTimer, secondsLeftForHint;
-    let totalSeconds = 0;
-    let stopwatchTimer;
+    // Spiel-Variablen
+    let particles = [], stations = [], config = {};
+    let currentStationIndex = 0, revealedHints = 0, totalSeconds = 0;
+    let hintTimer, progressTimer, stopwatchTimer, revealSolutionTimer;
+    let secondsLeftForHint;
 
     // --- FUNKTIONEN ---
 
-    function startStopwatch() {
+    const startStopwatch = () => {
         stopwatchTimer = setInterval(() => {
             totalSeconds++;
             const h = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
@@ -48,30 +42,32 @@ document.addEventListener('DOMContentLoaded', () => {
             const s = (totalSeconds % 60).toString().padStart(2, '0');
             stopwatchElement.textContent = `${h}:${m}:${s}`;
         }, 1000);
-    }
+    };
 
-    function stopStopwatch() {
-        clearInterval(stopwatchTimer);
-    }
+    const stopStopwatch = () => clearInterval(stopwatchTimer);
     
-    async function initializeGame() {
+    const initializeGame = async () => {
         try {
             const configResponse = await fetch('config.json');
-            config = configResponse.ok ? await configResponse.json() : { hintIntervalSeconds: 120 };
-
+            config = configResponse.ok ? await configResponse.json() : { hintIntervalSeconds: 120, revealSolutionDelaySeconds: 30 };
             const stationsResponse = await fetch('spiel.json');
             if (!stationsResponse.ok) throw new Error('Spieldaten (spiel.json) konnten nicht geladen werden.');
             stations = await stationsResponse.json();
-
             loadStation(currentStationIndex);
             startStopwatch();
         } catch (error) {
             stationNameElement.textContent = 'Fehler!';
             stationDescriptionElement.textContent = error.message;
         }
-    }
+    };
 
-    function loadStation(index) {
+    const loadStation = (index) => {
+        // Bestehende Timer löschen, wenn eine neue Station geladen wird
+        clearTimeout(revealSolutionTimer);
+        clearInterval(hintTimer);
+        clearInterval(progressTimer);
+        progressBar.classList.remove('reveal-mode');
+
         if (index >= stations.length) {
             endGame();
             return;
@@ -80,21 +76,15 @@ document.addEventListener('DOMContentLoaded', () => {
         stationNameElement.textContent = station.stationsname;
         stationDescriptionElement.textContent = station.beschreibung;
         
-        // Bild- und Fehlermeldungslogik
-        imageErrorElement.style.display = 'none'; // Fehlermeldung initial ausblenden
-
-        if (station.stationsbild && station.stationsbild.trim() !== '') {
-            stationImageElement.style.display = 'block'; // Bildcontainer anzeigen
+        imageErrorElement.style.display = 'none';
+        stationImageElement.style.display = (station.stationsbild && station.stationsbild.trim() !== '') ? 'block' : 'none';
+        if (stationImageElement.style.display === 'block') {
             stationImageElement.src = `img/${station.stationsbild}`;
-        } else {
-            stationImageElement.style.display = 'none'; // Bildcontainer ausblenden, wenn kein Bild definiert ist
         }
-
-        // on-error-Handler für das Bild
         stationImageElement.onerror = () => {
-            stationImageElement.style.display = 'none'; // Defektes Bild ausblenden
+            stationImageElement.style.display = 'none';
             imageErrorElement.textContent = `Bild nicht gefunden. Erwarteter Dateiname: "${station.stationsbild}" im "img"-Ordner.`;
-            imageErrorElement.style.display = 'block'; // Fehlermeldung anzeigen
+            imageErrorElement.style.display = 'block';
         };
 
         revealedHints = 0;
@@ -107,16 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
         solutionInput.disabled = false;
         submitButton.disabled = false;
         startHintTimer();
-    }
+    };
     
-    function revealHint() {
-        if (revealedHints >= hintBoxes.length) {
-            clearInterval(hintTimer);
-            clearInterval(progressTimer);
-            progressBar.style.width = '0%';
-            progressText.textContent = 'Alle Hinweise aufgedeckt!';
-            return;
-        }
+    const revealHint = () => {
+        if (revealedHints >= hintBoxes.length) return;
+        
         const station = stations[currentStationIndex];
         const hintKey = `hinweis${revealedHints + 1}`;
         const hintBox = hintBoxes[revealedHints];
@@ -124,48 +109,68 @@ document.addEventListener('DOMContentLoaded', () => {
         hintBox.classList.remove('locked');
         hintBox.classList.add('unlocked');
         revealedHints++;
-    }
+
+        if (revealedHints === hintBoxes.length) {
+            // Alle Hinweise aufgedeckt, Lösungs-Timer starten
+            clearInterval(hintTimer);
+            clearInterval(progressTimer);
+            startRevealSolutionTimer();
+        }
+    };
     
-    function startHintTimer() {
+    const startHintTimer = () => {
         clearInterval(hintTimer);
         clearInterval(progressTimer);
         revealHint();
         if (revealedHints >= hintBoxes.length) return;
         
-        const HINT_INTERVAL_SECONDS = config.hintIntervalSeconds || 120;
-        secondsLeftForHint = HINT_INTERVAL_SECONDS;
+        const HINT_INTERVAL = config.hintIntervalSeconds || 120;
+        secondsLeftForHint = HINT_INTERVAL;
         hintTimer = setInterval(() => {
             revealHint();
-            secondsLeftForHint = HINT_INTERVAL_SECONDS;
-            if (revealedHints >= hintBoxes.length) clearInterval(hintTimer);
-        }, HINT_INTERVAL_SECONDS * 1000);
+            secondsLeftForHint = HINT_INTERVAL;
+        }, HINT_INTERVAL * 1000);
         
         progressTimer = setInterval(() => {
             secondsLeftForHint--;
-            progressBar.style.width = `${100 - ((secondsLeftForHint / HINT_INTERVAL_SECONDS) * 100)}%`;
+            progressBar.style.width = `${100 - ((secondsLeftForHint / HINT_INTERVAL) * 100)}%`;
             progressText.textContent = `Nächster Hinweis in ${secondsLeftForHint}s`;
-            if (secondsLeftForHint <= 0) secondsLeftForHint = HINT_INTERVAL_SECONDS;
-            if (revealedHints >= hintBoxes.length) {
-                clearInterval(progressTimer);
-                progressBar.style.width = '0%';
-                progressText.textContent = 'Alle Hinweise aufgedeckt!';
+            if (secondsLeftForHint <= 0) secondsLeftForHint = HINT_INTERVAL;
+        }, 1000);
+    };
+
+    // NEUE Funktion für den Lösungs-Timer
+    const startRevealSolutionTimer = () => {
+        const REVEAL_DELAY = config.revealSolutionDelaySeconds || 30;
+        let secondsLeft = REVEAL_DELAY;
+        progressBar.classList.add('reveal-mode');
+
+        progressTimer = setInterval(() => {
+            secondsLeft--;
+            progressBar.style.width = `${100 - ((secondsLeft / REVEAL_DELAY) * 100)}%`;
+            progressText.textContent = `Lösung wird in ${secondsLeft}s angezeigt...`;
+            if(secondsLeft <= 0) {
+                 clearInterval(progressTimer);
             }
         }, 1000);
-    }
+        
+        revealSolutionTimer = setTimeout(showSolutionModal, REVEAL_DELAY * 1000);
+    };
     
-    function normalizeString(str) {
+    const normalizeString = (str) => {
         if (!str) return '';
         return str.toLowerCase().replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss').trim();
-    }
+    };
     
-    function checkSolution() {
+    const checkSolution = () => {
         const station = stations[currentStationIndex];
         const normalizedInput = normalizeString(solutionInput.value);
         const isCheating = normalizedInput === '47110815';
         const isCorrect1 = normalizedInput === normalizeString(station.loesungswort);
-        let isCorrect2 = station.loesungswort2 ? normalizedInput === normalizeString(station.loesungswort2) : false;
+        const isCorrect2 = station.loesungswort2 ? normalizedInput === normalizeString(station.loesungswort2) : false;
 
         if (isCorrect1 || isCorrect2 || isCheating) {
+            clearTimeout(revealSolutionTimer); // Wichtig: Lösungs-Timer stoppen!
             playSound(soundCorrect);
             triggerSmallFireworks();
             submitButton.disabled = true;
@@ -178,34 +183,44 @@ document.addEventListener('DOMContentLoaded', () => {
             solutionInput.style.animation = 'shake 0.5s';
             setTimeout(() => { solutionInput.style.animation = ''; }, 500);
         }
-    }
+    };
     
-    function endGame() {
+    const endGame = () => {
         stopStopwatch();
         stationContent.style.display = 'none';
         endScreen.style.display = 'block';
         finalTimeElement.textContent = stopwatchElement.textContent;
         playSound(soundWin);
         triggerLargeFireworks();
-    }
+    };
 
-    function reportError() {
+    const reportError = () => {
         if (stations.length > 0 && stations[currentStationIndex]) {
             const stationName = stations[currentStationIndex].stationsname;
             const subject = `Willinghusen Rallye FEHLER: ${stationName}`;
             window.location.href = `mailto:scholzm@me.com?subject=${encodeURIComponent(subject)}`;
         }
-    }
+    };
+    
+    // NEUE Funktionen für das Modal
+    const showSolutionModal = () => {
+        const station = stations[currentStationIndex];
+        modalSolutionText.textContent = station.loesungswort;
+        solutionModal.style.display = 'flex';
+    };
+
+    const hideSolutionModalAndAdvance = () => {
+        solutionModal.style.display = 'none';
+        currentStationIndex++;
+        loadStation(currentStationIndex);
+    };
 
     // --- SOUND & ANIMATION ---
-
-    function playSound(audioElement) {
+    const playSound = (audioElement) => {
         audioElement.currentTime = 0;
-        audioElement.play().catch(error => {
-            console.error("Audio konnte nicht abgespielt werden:", error);
-        });
-    }
-
+        audioElement.play().catch(console.error);
+    };
+    
     function Particle(x, y, color) {
         this.x = x; this.y = y; this.color = color;
         this.size = Math.random() * 2 + 1;
@@ -213,55 +228,43 @@ document.addEventListener('DOMContentLoaded', () => {
         this.vy = (Math.random() - 0.5) * 8;
         this.life = 1;
     }
-
-    Particle.prototype.update = function(index) {
+    Particle.prototype.update = function(i) {
         this.x += this.vx; this.y += this.vy;
         this.vy += 0.1; this.life -= 0.02;
-        if (this.life <= 0) particles.splice(index, 1);
+        if (this.life <= 0) particles.splice(i, 1);
         ctx.fillStyle = this.color; ctx.globalAlpha = this.life;
         ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill(); ctx.globalAlpha = 1;
     };
-
-    function createFirework(x, y, count, color) {
-        for (let i = 0; i < count; i++) {
-            particles.push(new Particle(x, y, color));
-        }
-    }
-
-    function triggerSmallFireworks() {
-        createFirework(window.innerWidth / 2, window.innerHeight / 3, 50, `hsl(${Math.random() * 360}, 100%, 70%)`);
-    }
-
-
-
-    function triggerLargeFireworks() {
+    const createFirework = (x, y, count, color) => {
+        for (let i = 0; i < count; i++) particles.push(new Particle(x, y, color));
+    };
+    const triggerSmallFireworks = () => createFirework(window.innerWidth / 2, window.innerHeight / 3, 50, `hsl(${Math.random() * 360}, 100%, 70%)`);
+    const triggerLargeFireworks = () => {
         const w = window.innerWidth, h = window.innerHeight;
         createFirework(w * 0.2, h * 0.3, 100, 'gold');
         setTimeout(() => createFirework(w * 0.8, h * 0.4, 100, 'cyan'), 300);
         setTimeout(() => createFirework(w * 0.5, h * 0.2, 100, 'magenta'), 600);
-    }
-
-    function animateFireworks() {
+    };
+    const animateFireworks = () => {
         requestAnimationFrame(animateFireworks);
         ctx.clearRect(0, 0, fireworksCanvas.width, fireworksCanvas.height);
-        for (let i = particles.length - 1; i >= 0; i--) {
-            particles[i].update(i);
-        }
-    }
+        for (let i = particles.length - 1; i >= 0; i--) particles[i].update(i);
+    };
 
-    // --- INITIALISIERUNG ---
+    // --- INITIALISIERUNG & EVENT LISTENERS ---
     submitButton.addEventListener('click', checkSolution);
     reportErrorButton.addEventListener('click', reportError);
+    modalCloseButton.addEventListener('click', hideSolutionModalAndAdvance);
     solutionInput.addEventListener('keyup', (event) => { if (event.key === 'Enter') checkSolution(); });
     
-    fireworksCanvas.width = window.innerWidth;
-    fireworksCanvas.height = window.innerHeight;
     window.addEventListener('resize', () => {
         fireworksCanvas.width = window.innerWidth;
         fireworksCanvas.height = window.innerHeight;
     });
-    animateFireworks();
+    fireworksCanvas.width = window.innerWidth;
+    fireworksCanvas.height = window.innerHeight;
     
+    animateFireworks();
     initializeGame();
 });
