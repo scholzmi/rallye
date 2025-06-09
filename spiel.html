@@ -16,10 +16,12 @@
 <body>
 
     <div class="game-container">
-        <!-- Header mit Stoppuhr -->
+        <!-- Header mit Stoppuhr und QR-Code -->
         <header class="game-header">
-            <h1>Rallye-Zeit</h1>
             <div id="stopwatch" class="stopwatch">00:00:00</div>
+            <a href="https://paypal.me/mischolz" target="_blank" rel="noopener noreferrer">
+                <img src="img/qrcode.png" alt="QR Code für Kaffeespende" class="header-qr-code" onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://paypal.me/mischolz';">
+            </a>
         </header>
 
         <!-- Hauptbereich des Spiels -->
@@ -59,11 +61,10 @@
         </div>
     </div>
 
-    <!-- NEU: Unauffälliger Footer -->
+    <!-- Unauffälliger Footer mit vollständigem Impressum -->
     <footer class="game-footer">
         <p>
-            janne und michael scholz, kleeweg 8, 22885 barsbüttel | 
-            <a href="https://paypal.me/mischolz" target="_blank" rel="noopener noreferrer">kaffeespende</a>
+            j. & m. scholz, kleeweg 8, 22885 barsbüttel | <a href="mailto:scholzm@me.com">scholzm@me.com</a> | <a href="tel:+491744825558">+49 174 4825558</a> | <a href="https://paypal.me/mischolz" target="_blank" rel="noopener noreferrer">kaffeespende</a>
         </p>
     </footer>
 
