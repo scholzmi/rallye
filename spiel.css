@@ -32,10 +32,10 @@ body {
     align-items: center;
 }
 
-/* NEU: Stile für QR-Code im Header */
+/* Stile für QR-Code im Header (Größe angepasst) */
 .header-qr-code {
-    width: 44px;
-    height: 44px;
+    width: 88px;  /* Verdoppelt */
+    height: 88px; /* Verdoppelt */
     display: block; /* Wichtig für korrekte Ausrichtung */
 }
 
