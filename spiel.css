@@ -6,10 +6,21 @@ body {
     margin: 0;
     padding: 1.5rem;
     display: flex;
-    flex-direction: column; /* Geändert für Footer */
-    justify-content: flex-start; /* Geändert für Footer */
-    align-items: center; /* Geändert für Footer */
+    flex-direction: column; 
+    justify-content: flex-start;
+    align-items: center; 
     min-height: 100vh;
+}
+
+/* NEU: Stile für das Fireworks Canvas */
+#fireworks-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Klicks gehen durch das Canvas hindurch */
+    z-index: 9999; /* Liegt über allem anderen */
 }
 
 .game-container {
@@ -23,24 +34,22 @@ body {
 .game-header {
     text-align: center;
     background-color: #ffffff;
-    padding: 0.75rem 1rem; /* Padding angepasst */
+    padding: 0.75rem 1rem;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    /* NEU: Flexbox für die Ausrichtung */
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-/* Stile für QR-Code im Header (Größe angepasst) */
 .header-qr-code {
-    width: 88px;  /* Verdoppelt */
-    height: 88px; /* Verdoppelt */
-    display: block; /* Wichtig für korrekte Ausrichtung */
+    width: 88px;
+    height: 88px;
+    display: block;
 }
 
 .stopwatch {
-    font-size: 1.8rem; /* Leicht verkleinert für besseres Layout */
+    font-size: 1.8rem;
     font-weight: 700;
     color: #3b82f6;
     letter-spacing: 1px;
@@ -181,7 +190,7 @@ body {
 
 .game-footer {
     width: 100%;
-    max-width: 500px; /* Gleiche Breite wie der Spiel-Container */
+    max-width: 500px;
     margin-top: 2rem;
     padding: 1rem 0;
     border-top: 1px solid #e5e7eb;
@@ -190,17 +199,17 @@ body {
 
 .game-footer p {
     margin: 0;
-    font-size: 0.75rem; /* Sehr kleine Schrift */
-    font-weight: 300; /* Feine Schriftart */
-    color: #9ca3af; /* Unauffällige Farbe */
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: #9ca3af;
     text-transform: lowercase;
-    line-height: 1.6; /* Zeilenhöhe für Lesbarkeit */
+    line-height: 1.6;
 }
 
 .game-footer a {
-    color: #6b7280; /* Etwas dunkler für bessere Lesbarkeit */
+    color: #6b7280;
     text-decoration: none;
-    white-space: nowrap; /* Verhindert Umbruch bei Links */
+    white-space: nowrap;
 }
 
 .game-footer a:hover {
