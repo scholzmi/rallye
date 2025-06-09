@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dorfrallye - Das Spiel</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Link zur spiel.css -->
+    <link rel="stylesheet" href="spiel.css">
+</head>
+<body>
+
+    <div class="game-container">
+        <!-- Header mit Stoppuhr -->
+        <header class="game-header">
+            <h1>Rallye-Zeit</h1>
+            <div id="stopwatch" class="stopwatch">00:00:00</div>
+        </header>
+
+        <!-- Hauptbereich des Spiels -->
+        <main id="station-content" class="station-card">
+            <h2 id="station-name">Station wird geladen...</h2>
+            <p id="station-description"></p>
+
+            <div class="hints-container">
+                <h3>Hinweise</h3>
+                <!-- Die 5 Hinweisfelder -->
+                <div id="hint-1" class="hint-box locked"><p>Hinweis 1</p></div>
+                <div id="hint-2" class="hint-box locked"><p>Hinweis 2</p></div>
+                <div id="hint-3" class="hint-box locked"><p>Hinweis 3</p></div>
+                <div id="hint-4" class="hint-box locked"><p>Hinweis 4</p></div>
+                <div id="hint-5" class="hint-box locked"><p>Hinweis 5</p></div>
+            </div>
+
+            <!-- Fortschrittsbalken für den nächsten Hinweis -->
+            <div class="progress-bar-container">
+                <div id="hint-progress-bar" class="progress-bar"></div>
+            </div>
+            <p id="progress-text" class="progress-text">Nächster Hinweis in...</p>
+
+            <!-- Eingabebereich -->
+            <div class="input-area">
+                <input type="text" id="solution-input" placeholder="Lösungswort eingeben...">
+                <button id="submit-button">Weiter</button>
+            </div>
+        </main>
+
+        <!-- Bereich für die End-Nachricht -->
+        <div id="end-screen" class="station-card" style="display: none;">
+            <h2>Herzlichen Glückwunsch!</h2>
+            <p>Du hast die Dorfrallye erfolgreich abgeschlossen.</p>
+            <p>Deine Gesamtzeit beträgt:</p>
+            <div id="final-time" class="stopwatch"></div>
+        </div>
+    </div>
+
+    <!-- Link zur spiel.js -->
+    <script src="spiel.js"></script>
+
+</body>
+</html>

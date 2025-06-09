@@ -1,0 +1,22 @@
+[
+    {
+        "stationsname": "Der Start: Schulhof",
+        "beschreibung": "Findet den großen, alten Baum in der Mitte des Schulhofs. Darunter ist der erste Hinweis versteckt, der euch den Weg zur nächsten Station weist.",
+        "hinweis1": "Ich habe eine Krone, bin aber kein König.",
+        "hinweis2": "Meine Blätter tanzen im Wind.",
+        "hinweis3": "Im Sommer spende ich Schatten.",
+        "hinweis4": "Vögel nisten gerne in meinen Ästen.",
+        "hinweis5": "Die Lösung ist das, was ich bin.",
+        "loesungswort": "baum"
+    },
+    {
+        "stationsname": "Die alte Brücke",
+        "beschreibung": "Geht über die kleine Holzbrücke am Bach. Zählt die Holzplanken und schaut auf der anderen Seite nach einem Zeichen.",
+        "hinweis1": "Ich führe über Wasser, ohne nass zu werden.",
+        "hinweis2": "Ich verbinde zwei Ufer.",
+        "hinweis3": "Man kann mich überqueren.",
+        "hinweis4": "Ich bin aus Holz gebaut.",
+        "hinweis5": "Die Lösung ist das, was ich bin.",
+        "loesungswort": "brücke"
+    }
+]
