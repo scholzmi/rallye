@@ -59,28 +59,42 @@ body {
     color: #ffffff; /* Weißer Text auf dem Bild */
 }
 
+/* Angepasst für einzeilige, kleinere Darstellung */
 .hero-title {
-    font-size: 2.5rem; /* 40px */
-    font-weight: 900;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
-}
-
-.hero-subtitle {
-    font-size: 1.875rem; /* 30px */
+    font-size: 2rem; /* Verkleinert für mobile Ansicht */
     font-weight: 700;
-    color: #a7c7fa; /* Helles Blau für den Untertitel */
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 .info-box {
-    margin-top: 2rem; /* 32px */
-    background-color: rgba(17, 24, 39, 0.6); /* Dunkler, halbtransparenter Hintergrund */
-    backdrop-filter: blur(5px); /* Weichzeichner-Effekt */
-    padding: 1.5rem; /* 24px */
-    border-radius: 0.75rem; /* 12px */
-    max-width: 32rem; /* 512px */
+    margin-top: 1.5rem; /* Abstand verringert */
+    background-color: rgba(17, 24, 39, 0.6);
+    backdrop-filter: blur(5px);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    max-width: 32rem;
     margin-left: auto;
     margin-right: auto;
+}
+
+/* NEU: Stile für den Start-Button */
+.start-button {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.8rem 2.5rem;
+    background-color: #60a5fa; /* Blauer Button */
+    color: #ffffff;
+    font-size: 1.125rem; /* 18px */
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 50px; /* Abgerundete Kanten */
+    box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.25);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.start-button:hover {
+    background-color: #3b82f6; /* Dunkleres Blau bei Hover */
+    transform: translateY(-2px);
 }
 
 /* Footer-Styling */
@@ -94,39 +108,38 @@ body {
 .footer-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 2rem; /* 32px */
-    max-width: 56rem; /* 896px */
+    gap: 2rem;
+    max-width: 56rem;
     margin: 0 auto;
 }
 
-/* Karten im Footer (Spende & Impressum) */
 .footer-card {
-    background-color: rgba(31, 41, 55, 0.7); /* Noch dunklerer Hintergrund */
+    background-color: rgba(31, 41, 55, 0.7);
     backdrop-filter: blur(5px);
     padding: 1.5rem;
     border-radius: 0.75rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* Zentriert den Inhalt vertikal */
+    justify-content: center;
 }
 
 .footer-card h3 {
-    font-size: 1.125rem; /* 18px */
+    font-size: 1.125rem;
     font-weight: 700;
-    margin-bottom: 0.5rem; /* 8px */
-    color: #dbeafe; /* Sehr helles Blau */
+    margin-bottom: 0.5rem;
+    color: #dbeafe;
 }
 
 .card-text {
-    font-size: 0.875rem; /* 14px */
+    font-size: 0.875rem;
     margin-bottom: 1rem;
     color: #bfdbfe;
     max-width: 300px;
 }
 
 .card-link {
-    color: #60a5fa; /* Helleres Blau für Links */
+    color: #60a5fa;
     text-decoration: none;
     font-weight: 600;
 }
@@ -144,13 +157,12 @@ body {
     margin-bottom: 0.5rem;
 }
 
-/* NEU: Stile für das Impressum */
 .imprint-details {
-    font-size: 0.875rem; /* 14px */
+    font-size: 0.875rem;
     line-height: 1.6;
     color: #bfdbfe;
-    text-transform: lowercase; /* Alles in Kleinbuchstaben */
-    font-weight: 300; /* Leichtere Schriftart */
+    text-transform: lowercase;
+    font-weight: 300;
 }
 
 .imprint-details p {
@@ -160,10 +172,7 @@ body {
 /* Responsive Design für größere Bildschirme */
 @media (min-width: 768px) {
     .hero-title {
-        font-size: 4rem; /* 64px */
-    }
-    .hero-subtitle {
-        font-size: 2.5rem; /* 40px */
+        font-size: 3rem; /* Auf Desktops wieder größer */
     }
     .footer-grid {
         grid-template-columns: repeat(2, 1fr);
