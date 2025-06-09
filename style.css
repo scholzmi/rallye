@@ -18,8 +18,8 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    /* WICHTIG: Pfad zum Bild anpassen. Muss im 'img' Unterverzeichnis sein. */
-    background-image: url('img/hintergrund_schulhof.jpg');
+    /* WICHTIG: Pfad zum Bild angepasst */
+    background-image: url('img/hintergrund_startseite.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -77,7 +77,7 @@ body {
     margin-right: auto;
 }
 
-/* NEU: Stile für den Start-Button */
+/* Stile für den Start-Button */
 .start-button {
     display: inline-block;
     margin-top: 2rem;

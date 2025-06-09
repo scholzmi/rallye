@@ -6,8 +6,9 @@ body {
     margin: 0;
     padding: 1.5rem;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column; /* Geändert für Footer */
+    justify-content: flex-start; /* Geändert für Footer */
+    align-items: center; /* Geändert für Footer */
     min-height: 100vh;
 }
 
@@ -56,7 +57,6 @@ body {
     color: #111827;
 }
 
-/* NEU: Stile für das Stationsbild */
 .station-image {
     width: 100%;
     height: auto;
@@ -174,4 +174,32 @@ body {
 
 #final-time {
     font-size: 2.5rem;
+}
+
+/* NEU: Stile für den Footer auf der Spielseite */
+.game-footer {
+    width: 100%;
+    max-width: 500px; /* Gleiche Breite wie der Spiel-Container */
+    margin-top: 2rem;
+    padding: 1rem 0;
+    border-top: 1px solid #e5e7eb;
+    text-align: center;
+}
+
+.game-footer p {
+    margin: 0;
+    font-size: 0.75rem; /* Sehr kleine Schrift */
+    font-weight: 300; /* Feine Schriftart */
+    color: #9ca3af; /* Unauffällige Farbe */
+    text-transform: lowercase;
+    line-height: 1.4;
+}
+
+.game-footer a {
+    color: #6b7280; /* Etwas dunkler für bessere Lesbarkeit */
+    text-decoration: none;
+}
+
+.game-footer a:hover {
+    text-decoration: underline;
 }

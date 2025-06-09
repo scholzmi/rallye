@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // HTML-Elemente für den Zugriff speichern
     const stopwatchElement = document.getElementById('stopwatch');
     const stationNameElement = document.getElementById('station-name');
-    const stationImageElement = document.getElementById('station-image'); // NEU
+    const stationImageElement = document.getElementById('station-image');
     const stationDescriptionElement = document.getElementById('station-description');
     const hintBoxes = [
         document.getElementById('hint-1'),
@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Funktion zum Laden der Stationsdaten aus der JSON-Datei
     async function fetchStations() {
         try {
+            // Pfad angepasst, da die Datei jetzt im Root-Verzeichnis liegt
             const response = await fetch('spiel.json');
             if (!response.ok) {
                 throw new Error('Die Spieldaten (spiel.json) konnten nicht geladen werden.');
@@ -84,16 +85,16 @@ document.addEventListener('DOMContentLoaded', () => {
         stationNameElement.textContent = station.stationsname;
         stationDescriptionElement.textContent = station.beschreibung;
         
-        // NEU: Stationsbild laden
+        // Stationsbild laden (Pfad angepasst)
         if (station.stationsbild && station.stationsbild.trim() !== '') {
-            stationImageElement.src = `../img/${station.stationsbild}`;
+            stationImageElement.src = `img/${station.stationsbild}`;
             stationImageElement.style.display = 'block'; // Bild anzeigen
         } else {
             stationImageElement.style.display = 'none'; // Bild ausblenden, wenn keins definiert ist
         }
-        // Fallback, wenn das Bild nicht geladen werden kann
+        // Fallback, wenn das Bild nicht geladen werden kann (Pfad angepasst)
         stationImageElement.onerror = () => {
-            stationImageElement.src = '../img/hintergrund_schulhof.jpg';
+            stationImageElement.src = 'img/hintergrund_startseite.jpg';
         };
 
         // Zurücksetzen der Hinweise und des Eingabefeldes
@@ -157,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     }
     
-    // NEU: Funktion zur Normalisierung von Text (Umlaute, Groß-/Kleinschreibung)
+    // Funktion zur Normalisierung von Text (Umlaute, Groß-/Kleinschreibung)
     function normalizeString(str) {
         return str
             .toLowerCase()
@@ -173,10 +174,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const station = stations[currentStationIndex];
         const userInput = solutionInput.value;
 
-        // NEU: Cheating-Möglichkeit für Testzwecke ;)
+        // Cheating-Möglichkeit für Testzwecke ;)
         const isCheating = userInput === '47110815';
         
-        // NEU: Normalisierter Vergleich
+        // Normalisierter Vergleich
         const isCorrect = normalizeString(userInput) === normalizeString(station.loesungswort);
 
         if (isCorrect || isCheating) {
