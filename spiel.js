@@ -22,16 +22,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const endScreen = document.getElementById('end-screen');
     const finalTimeElement = document.getElementById('final-time');
 
-    // Spielzustand
+    // Spielzustand & Konfiguration
     let stations = [];
+    let config = {}; // NEU: Leeres Objekt für Konfigurationsdaten
     let currentStationIndex = 0;
     let revealedHints = 0;
     
     // Timer-Variablen
-    const HINT_INTERVAL_SECONDS = 120; // 2 Minuten
     let hintTimer;
     let progressTimer;
-    let secondsLeftForHint = HINT_INTERVAL_SECONDS;
+    let secondsLeftForHint;
 
     // Stoppuhr-Variablen
     let totalSeconds = 0;
@@ -53,15 +53,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // --- SPIELLOGIK ---
-    async function fetchStations() {
+
+    // NEU: Haupt-Initialisierungsfunktion
+    async function initializeGame() {
         try {
-            const response = await fetch('spiel.json');
-            if (!response.ok) {
+            // Zuerst die Konfiguration laden
+            const configResponse = await fetch('config.json');
+            if (configResponse.ok) {
+                config = await configResponse.json();
+            } else {
+                // Fallback, wenn config.json nicht gefunden wird
+                console.warn('config.json nicht gefunden. Benutze Standardwerte.');
+                config = { hintIntervalSeconds: 120 };
+            }
+
+            // Danach die Stationsdaten laden
+            const stationsResponse = await fetch('spiel.json');
+            if (!stationsResponse.ok) {
                 throw new Error('Die Spieldaten (spiel.json) konnten nicht geladen werden.');
             }
-            stations = await response.json();
+            stations = await stationsResponse.json();
+
+            // Spiel mit der ersten Station starten
             loadStation(currentStationIndex);
             startStopwatch();
+
         } catch (error) {
             stationNameElement.textContent = 'Fehler!';
             stationDescriptionElement.textContent = error.message;
@@ -125,7 +141,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (revealedHints >= hintBoxes.length) return;
         
+        // NEU: Intervall aus der Konfiguration lesen
+        const HINT_INTERVAL_SECONDS = config.hintIntervalSeconds || 120;
         secondsLeftForHint = HINT_INTERVAL_SECONDS;
+
         hintTimer = setInterval(() => {
             revealHint();
             secondsLeftForHint = HINT_INTERVAL_SECONDS;
@@ -157,28 +176,23 @@ document.addEventListener('DOMContentLoaded', () => {
             .trim();
     }
     
-    // Funktion zum Prüfen der Antwort (aktualisiert)
     function checkSolution() {
         const station = stations[currentStationIndex];
         const normalizedInput = normalizeString(solutionInput.value);
 
         const isCheating = normalizedInput === '47110815';
         
-        // Normalisierten Vergleich für das erste Lösungswort durchführen
         const isCorrect1 = normalizedInput === normalizeString(station.loesungswort);
         
-        // NEU: Normalisierten Vergleich für das zweite Lösungswort durchführen, falls es existiert
         let isCorrect2 = false;
         if (station.loesungswort2 && station.loesungswort2.trim() !== '') {
             isCorrect2 = normalizedInput === normalizeString(station.loesungswort2);
         }
 
         if (isCorrect1 || isCorrect2 || isCheating) {
-            // Richtige Antwort (oder Cheat-Code)
             currentStationIndex++;
             loadStation(currentStationIndex);
         } else {
-            // Falsche Antwort
             solutionInput.style.animation = 'shake 0.5s';
             setTimeout(() => {
                 solutionInput.style.animation = '';
@@ -198,5 +212,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.key === 'Enter') checkSolution();
     });
 
-    fetchStations();
+    // Das Spiel über die neue Funktion starten
+    initializeGame();
 });
