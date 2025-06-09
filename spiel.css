@@ -179,14 +179,14 @@ body {
     background-color: #2563eb;
 }
 
-/* NEU: Stile für den Fehler-melden-Button */
+/* Stile für den Fehler-melden-Button in Rosa */
 .report-button {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #fecdd3; /* Zarter Rosa-Rand */
     border-radius: 8px;
     background-color: transparent;
-    color: #6b7280;
+    color: #be123c; /* Dunkleres Rosa für den Text */
     font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
@@ -194,8 +194,8 @@ body {
 }
 
 .report-button:hover {
-    background-color: #f9fafb;
-    border-color: #d1d5db;
+    background-color: #fff1f2; /* Sehr helles Rosa bei Hover */
+    border-color: #f9a8d4; /* Etwas kräftigerer Rand bei Hover */
 }
 
 #end-screen {
