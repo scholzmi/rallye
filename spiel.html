@@ -15,7 +15,6 @@
 </head>
 <body>
 
-    <!-- NEU: Canvas für Feuerwerk -->
     <canvas id="fireworks-canvas"></canvas>
 
     <div class="game-container">
@@ -52,6 +51,8 @@
             <div class="input-area">
                 <input type="text" id="solution-input" placeholder="Lösungswort eingeben...">
                 <button id="submit-button">Weiter</button>
+                <!-- NEU: Fehler melden Button -->
+                <button id="report-error-button" class="report-button">Fehler melden</button>
             </div>
         </main>
 
@@ -71,7 +72,7 @@
         </p>
     </footer>
 
-    <!-- NEU: Audio-Elemente für die Soundeffekte -->
+    <!-- Audio-Elemente für die Soundeffekte -->
     <audio id="audio-correct" src="sound/correct.wav" preload="auto"></audio>
     <audio id="audio-wrong" src="sound/wrong.wav" preload="auto"></audio>
     <audio id="audio-win" src="sound/win.wav" preload="auto"></audio>

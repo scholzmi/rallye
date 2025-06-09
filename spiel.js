@@ -1,4 +1,3 @@
-// Warten, bis das gesamte HTML-Dokument geladen ist
 document.addEventListener('DOMContentLoaded', () => {
 
     // HTML-Elemente für den Zugriff speichern
@@ -17,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressText = document.getElementById('progress-text');
     const solutionInput = document.getElementById('solution-input');
     const submitButton = document.getElementById('submit-button');
+    const reportErrorButton = document.getElementById('report-error-button'); // NEU
     const stationContent = document.getElementById('station-content');
     const endScreen = document.getElementById('end-screen');
     const finalTimeElement = document.getElementById('final-time');
@@ -177,6 +177,16 @@ document.addEventListener('DOMContentLoaded', () => {
         triggerLargeFireworks();
     }
 
+    // NEU: Funktion, um eine Fehler-E-Mail zu erstellen
+    function reportError() {
+        if (stations.length > 0 && stations[currentStationIndex]) {
+            const stationName = stations[currentStationIndex].stationsname;
+            const subject = `Willinghusen Rallye FEHLER: ${stationName}`;
+            // Das E-Mail-Programm des Nutzers wird mit dem vorbereiteten Betreff geöffnet
+            window.location.href = `mailto:scholzm@me.com?subject=${encodeURIComponent(subject)}`;
+        }
+    }
+
     // --- SOUND & ANIMATION ---
 
     function playSound(audioElement) {
@@ -187,9 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function Particle(x, y, color) {
-        this.x = x;
-        this.y = y;
-        this.color = color;
+        this.x = x; this.y = y; this.color = color;
         this.size = Math.random() * 2 + 1;
         this.vx = (Math.random() - 0.5) * 8;
         this.vy = (Math.random() - 0.5) * 8;
@@ -197,17 +205,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     Particle.prototype.update = function(index) {
-        this.x += this.vx;
-        this.y += this.vy;
-        this.vy += 0.1; // Gravity
-        this.life -= 0.02;
+        this.x += this.vx; this.y += this.vy;
+        this.vy += 0.1; this.life -= 0.02;
         if (this.life <= 0) particles.splice(index, 1);
-        ctx.fillStyle = this.color;
-        ctx.globalAlpha = this.life;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.globalAlpha = 1;
+        ctx.fillStyle = this.color; ctx.globalAlpha = this.life;
+        ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill(); ctx.globalAlpha = 1;
     };
 
     function createFirework(x, y, count, color) {
@@ -221,8 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function triggerLargeFireworks() {
-        const w = window.innerWidth;
-        const h = window.innerHeight;
+        const w = window.innerWidth, h = window.innerHeight;
         createFirework(w * 0.2, h * 0.3, 100, 'gold');
         setTimeout(() => createFirework(w * 0.8, h * 0.4, 100, 'cyan'), 300);
         setTimeout(() => createFirework(w * 0.5, h * 0.2, 100, 'magenta'), 600);
@@ -230,7 +232,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function animateFireworks() {
         requestAnimationFrame(animateFireworks);
-        // KORREKTUR: Canvas leeren anstatt mit Schwarz zu füllen
         ctx.clearRect(0, 0, fireworksCanvas.width, fireworksCanvas.height);
         for (let i = particles.length - 1; i >= 0; i--) {
             particles[i].update(i);
@@ -238,8 +239,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- INITIALISIERUNG ---
-
     submitButton.addEventListener('click', checkSolution);
+    reportErrorButton.addEventListener('click', reportError); // NEU
     solutionInput.addEventListener('keyup', (event) => { if (event.key === 'Enter') checkSolution(); });
     
     fireworksCanvas.width = window.innerWidth;
