@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function startStopwatch() {
         stopwatchTimer = setInterval(() => {
             totalSeconds++;
-            // Formatieren und Anzeigen der Zeit
             const hours = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
             const minutes = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
             const seconds = (totalSeconds % 60).toString().padStart(2, '0');
@@ -54,17 +53,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // --- SPIELLOGIK ---
-
-    // Funktion zum Laden der Stationsdaten aus der JSON-Datei
     async function fetchStations() {
         try {
-            // Pfad angepasst, da die Datei jetzt im Root-Verzeichnis liegt
             const response = await fetch('spiel.json');
             if (!response.ok) {
                 throw new Error('Die Spieldaten (spiel.json) konnten nicht geladen werden.');
             }
             stations = await response.json();
-            // Startet das Spiel mit der ersten Station
             loadStation(currentStationIndex);
             startStopwatch();
         } catch (error) {
@@ -73,10 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Funktion zum Laden und Anzeigen einer Station
     function loadStation(index) {
         if (index >= stations.length) {
-            // Spiel beendet
             endGame();
             return;
         }
@@ -85,19 +78,16 @@ document.addEventListener('DOMContentLoaded', () => {
         stationNameElement.textContent = station.stationsname;
         stationDescriptionElement.textContent = station.beschreibung;
         
-        // Stationsbild laden (Pfad angepasst)
         if (station.stationsbild && station.stationsbild.trim() !== '') {
             stationImageElement.src = `img/${station.stationsbild}`;
-            stationImageElement.style.display = 'block'; // Bild anzeigen
+            stationImageElement.style.display = 'block';
         } else {
-            stationImageElement.style.display = 'none'; // Bild ausblenden, wenn keins definiert ist
+            stationImageElement.style.display = 'none';
         }
-        // Fallback, wenn das Bild nicht geladen werden kann (Pfad angepasst)
         stationImageElement.onerror = () => {
             stationImageElement.src = 'img/hintergrund_startseite.jpg';
         };
 
-        // Zurücksetzen der Hinweise und des Eingabefeldes
         revealedHints = 0;
         hintBoxes.forEach((box, i) => {
             box.classList.add('locked');
@@ -107,8 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
         solutionInput.value = '';
         solutionInput.disabled = false;
         submitButton.disabled = false;
-
-        // Startet den Timer für den ersten Hinweis
         startHintTimer();
     }
     
@@ -158,8 +146,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     }
     
-    // Funktion zur Normalisierung von Text (Umlaute, Groß-/Kleinschreibung)
     function normalizeString(str) {
+        if (!str) return ''; // Absicherung gegen null oder undefined
         return str
             .toLowerCase()
             .replace(/ä/g, 'ae')
@@ -172,16 +160,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Funktion zum Prüfen der Antwort (aktualisiert)
     function checkSolution() {
         const station = stations[currentStationIndex];
-        const userInput = solutionInput.value;
+        const normalizedInput = normalizeString(solutionInput.value);
 
-        // Cheating-Möglichkeit für Testzwecke ;)
-        const isCheating = userInput === '47110815';
+        const isCheating = normalizedInput === '47110815';
         
-        // Normalisierter Vergleich
-        const isCorrect = normalizeString(userInput) === normalizeString(station.loesungswort);
+        // Normalisierten Vergleich für das erste Lösungswort durchführen
+        const isCorrect1 = normalizedInput === normalizeString(station.loesungswort);
+        
+        // NEU: Normalisierten Vergleich für das zweite Lösungswort durchführen, falls es existiert
+        let isCorrect2 = false;
+        if (station.loesungswort2 && station.loesungswort2.trim() !== '') {
+            isCorrect2 = normalizedInput === normalizeString(station.loesungswort2);
+        }
 
-        if (isCorrect || isCheating) {
-            // Richtige Antwort oder Cheat-Code
+        if (isCorrect1 || isCorrect2 || isCheating) {
+            // Richtige Antwort (oder Cheat-Code)
             currentStationIndex++;
             loadStation(currentStationIndex);
         } else {

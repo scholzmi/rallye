@@ -1,25 +1,27 @@
 [
     {
         "stationsname": "Der Start: Schulhof",
-        "beschreibung": "Findet den großen, alten Baum in der Mitte des Schulhofs. Darunter ist der erste Hinweis versteckt, der euch den Weg zur nächsten Station weist.",
+        "beschreibung": "Willkommen auf dem Schulhof der Grundschule Willinghusen.",
         "stationsbild": "baum_station.jpg",
-        "hinweis1": "Ich habe eine Krone, bin aber kein König.",
-        "hinweis2": "Meine Blätter tanzen im Wind.",
-        "hinweis3": "Im Sommer spende ich Schatten.",
-        "hinweis4": "Vögel nisten gerne in meinen Ästen.",
-        "hinweis5": "Die Lösung ist das, was ich bin.",
-        "loesungswort": "Baum"
+        "hinweis1": "Stellt Euch genau da hin, wo das Photo entstanden ist.",
+        "hinweis2": "Ca. in Richtung 4 Uhr in 150 Metern ist ein elementar wichtiges Gebäude.",
+        "hinweis3": "Hoffentlich braucht man die nie im Leben.",
+        "hinweis4": "Es gibt dort rote Fahrzeuge.",
+        "hinweis5": "Man erreicht die Leute bei Tag und Nacht unter 112. Begebt euch dort hin.",
+        "loesungswort": "Feuerwehr",
+        "loesungswort2": ""
     },
     {
-        "stationsname": "Die alte Brücke",
-        "beschreibung": "Geht über die kleine Holzbrücke am Bach. Zählt die Holzplanken und schaut auf der anderen Seite nach einem Zeichen.",
-        "stationsbild": "bruecke_station.jpg",
-        "hinweis1": "Ich führe über Wasser, ohne nass zu werden.",
-        "hinweis2": "Ich verbinde zwei Ufer.",
-        "hinweis3": "Man kann mich überqueren.",
-        "hinweis4": "Ich bin aus Holz gebaut.",
-        "hinweis5": "Die Lösung ist das, was ich bin.",
-        "loesungswort": "Brücke"
+        "stationsname": "Die Feuerwehr",
+        "beschreibung": "Ihr seid nun auf dem Vorplatz der Feuerwehr angekommen. Schaut Euch um.",
+        "stationsbild": "feuerwehr.jpg",
+        "hinweis1": "Ich bin ein Code.",
+        "hinweis2": "Daran erkennt man mich eindeutig.",
+        "hinweis3": "Ich stehe auf einem Fahrzeug",
+        "hinweis4": "Ich bin ein Nummernschild",
+        "hinweis5": "Mein Nummerschild lautet OD-2557",
+        "loesungswort": "OD-2557",
+        "loesungswort2": "OD2557"
     },
     {
         "stationsname": "Geheimes Versteck",
@@ -30,6 +32,7 @@
         "hinweis3": "Es riecht nach Moos und feuchter Erde.",
         "hinweis4": "Ein guter Ort für ein Picknick.",
         "hinweis5": "Die Lösung ist der Name unseres Dorfes.",
-        "loesungswort": "Willinghusen"
+        "loesungswort": "Willinghusen",
+        "loesungswort2": "xxx"
     }
 ]
