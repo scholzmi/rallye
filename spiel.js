@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const fireworksCanvas = document.getElementById('fireworks-canvas');
     const ctx = fireworksCanvas.getContext('2d');
     
-    // NEU: Audio-Elemente laden
+    // Audio-Elemente laden
     const soundCorrect = document.getElementById('audio-correct');
     const soundWrong = document.getElementById('audio-wrong');
     const soundWin = document.getElementById('audio-win');
@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let isCorrect2 = station.loesungswort2 ? normalizedInput === normalizeString(station.loesungswort2) : false;
 
         if (isCorrect1 || isCorrect2 || isCheating) {
-            playSound(soundCorrect); // Sound für richtige Antwort
+            playSound(soundCorrect);
             triggerSmallFireworks();
             submitButton.disabled = true;
             setTimeout(() => {
@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 loadStation(currentStationIndex);
             }, 1500);
         } else {
-            playSound(soundWrong); // Sound für falsche Antwort
+            playSound(soundWrong);
             solutionInput.style.animation = 'shake 0.5s';
             setTimeout(() => { solutionInput.style.animation = ''; }, 500);
         }
@@ -173,18 +173,15 @@ document.addEventListener('DOMContentLoaded', () => {
         stationContent.style.display = 'none';
         endScreen.style.display = 'block';
         finalTimeElement.textContent = stopwatchElement.textContent;
-        playSound(soundWin); // Sound für den Sieg
+        playSound(soundWin);
         triggerLargeFireworks();
     }
 
     // --- SOUND & ANIMATION ---
 
-    // NEU: Überarbeitete playSound Funktion
     function playSound(audioElement) {
-        // Stellt sicher, dass der Sound von vorne beginnt, falls er noch läuft
         audioElement.currentTime = 0;
         audioElement.play().catch(error => {
-            // Fängt Fehler ab, falls der Browser das Abspielen trotzdem blockiert
             console.error("Audio konnte nicht abgespielt werden:", error);
         });
     }
@@ -233,8 +230,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function animateFireworks() {
         requestAnimationFrame(animateFireworks);
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-        ctx.fillRect(0, 0, fireworksCanvas.width, fireworksCanvas.height);
+        // KORREKTUR: Canvas leeren anstatt mit Schwarz zu füllen
+        ctx.clearRect(0, 0, fireworksCanvas.width, fireworksCanvas.height);
         for (let i = particles.length - 1; i >= 0; i--) {
             particles[i].update(i);
         }
