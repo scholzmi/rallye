@@ -62,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const loadStation = (index) => {
-        // Bestehende Timer löschen, wenn eine neue Station geladen wird
         clearTimeout(revealSolutionTimer);
         clearInterval(hintTimer);
         clearInterval(progressTimer);
@@ -111,7 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
         revealedHints++;
 
         if (revealedHints === hintBoxes.length) {
-            // Alle Hinweise aufgedeckt, Lösungs-Timer starten
             clearInterval(hintTimer);
             clearInterval(progressTimer);
             startRevealSolutionTimer();
@@ -126,6 +124,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const HINT_INTERVAL = config.hintIntervalSeconds || 120;
         secondsLeftForHint = HINT_INTERVAL;
+        
+        // Initialer Zustand des Balkens
+        progressBar.style.width = '100%';
+        
         hintTimer = setInterval(() => {
             revealHint();
             secondsLeftForHint = HINT_INTERVAL;
@@ -133,21 +135,25 @@ document.addEventListener('DOMContentLoaded', () => {
         
         progressTimer = setInterval(() => {
             secondsLeftForHint--;
-            progressBar.style.width = `${100 - ((secondsLeftForHint / HINT_INTERVAL) * 100)}%`;
+            // KORREKTUR: Breite auf Basis der verbleibenden Zeit berechnen
+            progressBar.style.width = `${(secondsLeftForHint / HINT_INTERVAL) * 100}%`;
             progressText.textContent = `Nächster Hinweis in ${secondsLeftForHint}s`;
             if (secondsLeftForHint <= 0) secondsLeftForHint = HINT_INTERVAL;
         }, 1000);
     };
 
-    // NEUE Funktion für den Lösungs-Timer
     const startRevealSolutionTimer = () => {
         const REVEAL_DELAY = config.revealSolutionDelaySeconds || 30;
         let secondsLeft = REVEAL_DELAY;
         progressBar.classList.add('reveal-mode');
 
+        // Initialer Zustand des Balkens
+        progressBar.style.width = '100%';
+
         progressTimer = setInterval(() => {
             secondsLeft--;
-            progressBar.style.width = `${100 - ((secondsLeft / REVEAL_DELAY) * 100)}%`;
+            // KORREKTUR: Breite auf Basis der verbleibenden Zeit berechnen
+            progressBar.style.width = `${(secondsLeft / REVEAL_DELAY) * 100}%`;
             progressText.textContent = `Lösung wird in ${secondsLeft}s angezeigt...`;
             if(secondsLeft <= 0) {
                  clearInterval(progressTimer);
@@ -170,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const isCorrect2 = station.loesungswort2 ? normalizedInput === normalizeString(station.loesungswort2) : false;
 
         if (isCorrect1 || isCorrect2 || isCheating) {
-            clearTimeout(revealSolutionTimer); // Wichtig: Lösungs-Timer stoppen!
+            clearTimeout(revealSolutionTimer);
             playSound(soundCorrect);
             triggerSmallFireworks();
             submitButton.disabled = true;
@@ -202,7 +208,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
-    // NEUE Funktionen für das Modal
     const showSolutionModal = () => {
         const station = stations[currentStationIndex];
         modalSolutionText.textContent = station.loesungswort;
@@ -215,7 +220,6 @@ document.addEventListener('DOMContentLoaded', () => {
         loadStation(currentStationIndex);
     };
 
-    // --- SOUND & ANIMATION ---
     const playSound = (audioElement) => {
         audioElement.currentTime = 0;
         audioElement.play().catch(console.error);

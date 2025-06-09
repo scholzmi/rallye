@@ -22,7 +22,6 @@ body {
     z-index: 9999; /* Liegt über allem anderen */
 }
 
-/* NEU: Stile für das Lösungs-Modal */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -190,6 +189,7 @@ body {
     overflow: hidden;
     height: 10px;
     margin-top: 2rem;
+    direction: rtl; /* KORREKTUR: Lässt den Balken von rechts schrumpfen */
 }
 
 .progress-bar {
@@ -200,7 +200,6 @@ body {
     transition: width 1s linear, background-color 0.5s ease;
 }
 
-/* NEU: Roter Fortschrittsbalken */
 .progress-bar.reveal-mode {
     background-color: #ef4444; /* red-500 */
 }
@@ -252,7 +251,6 @@ body {
     background-color: #2563eb;
 }
 
-/* Stile für den Fehler-melden-Button in Rosa */
 .report-button {
     width: 100%;
     padding: 0.75rem;
