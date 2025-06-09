@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // HTML-Elemente für den Zugriff speichern
     const stopwatchElement = document.getElementById('stopwatch');
     const stationNameElement = document.getElementById('station-name');
+    const stationImageElement = document.getElementById('station-image'); // NEU
     const stationDescriptionElement = document.getElementById('station-description');
     const hintBoxes = [
         document.getElementById('hint-1'),
@@ -83,12 +84,23 @@ document.addEventListener('DOMContentLoaded', () => {
         stationNameElement.textContent = station.stationsname;
         stationDescriptionElement.textContent = station.beschreibung;
         
+        // NEU: Stationsbild laden
+        if (station.stationsbild && station.stationsbild.trim() !== '') {
+            stationImageElement.src = `../img/${station.stationsbild}`;
+            stationImageElement.style.display = 'block'; // Bild anzeigen
+        } else {
+            stationImageElement.style.display = 'none'; // Bild ausblenden, wenn keins definiert ist
+        }
+        // Fallback, wenn das Bild nicht geladen werden kann
+        stationImageElement.onerror = () => {
+            stationImageElement.src = '../img/hintergrund_schulhof.jpg';
+        };
+
         // Zurücksetzen der Hinweise und des Eingabefeldes
         revealedHints = 0;
         hintBoxes.forEach((box, i) => {
             box.classList.add('locked');
             box.classList.remove('unlocked');
-            // Der Text der Hinweise wird erst beim Aufdecken gesetzt
             box.querySelector('p').textContent = `Hinweis ${i + 1}`;
         });
         solutionInput.value = '';
@@ -99,17 +111,14 @@ document.addEventListener('DOMContentLoaded', () => {
         startHintTimer();
     }
     
-    // Funktion zum Aufdecken eines Hinweises
     function revealHint() {
         if (revealedHints >= hintBoxes.length) {
-             // Alle Hinweise aufgedeckt, Timer stoppen
             clearInterval(hintTimer);
             clearInterval(progressTimer);
             progressBar.style.width = '0%';
             progressText.textContent = 'Alle Hinweise aufgedeckt!';
             return;
         }
-
         const station = stations[currentStationIndex];
         const hintKey = `hinweis${revealedHints + 1}`;
         const hintBox = hintBoxes[revealedHints];
@@ -117,45 +126,29 @@ document.addEventListener('DOMContentLoaded', () => {
         hintBox.querySelector('p').textContent = station[hintKey];
         hintBox.classList.remove('locked');
         hintBox.classList.add('unlocked');
-        
         revealedHints++;
     }
     
-    // Funktion zum Starten des Hinweis-Timers
     function startHintTimer() {
-        // Bestehende Timer löschen
         clearInterval(hintTimer);
         clearInterval(progressTimer);
-
-        // Sofort den ersten Hinweis aufdecken
         revealHint();
 
-        // Wenn alle Hinweise aufgedeckt sind, keinen neuen Timer starten
-        if (revealedHints >= hintBoxes.length) {
-            return;
-        }
+        if (revealedHints >= hintBoxes.length) return;
         
         secondsLeftForHint = HINT_INTERVAL_SECONDS;
-        
-        // Haupt-Timer, der alle 2 Minuten einen Hinweis aufdeckt
         hintTimer = setInterval(() => {
             revealHint();
-            secondsLeftForHint = HINT_INTERVAL_SECONDS; // Timer zurücksetzen
-            if (revealedHints >= hintBoxes.length) {
-                 clearInterval(hintTimer); // Stoppen, wenn alle aufgedeckt sind
-            }
+            secondsLeftForHint = HINT_INTERVAL_SECONDS;
+            if (revealedHints >= hintBoxes.length) clearInterval(hintTimer);
         }, HINT_INTERVAL_SECONDS * 1000);
         
-        // Timer für den Fortschrittsbalken, der jede Sekunde läuft
         progressTimer = setInterval(() => {
             secondsLeftForHint--;
             const progressPercentage = (secondsLeftForHint / HINT_INTERVAL_SECONDS) * 100;
             progressBar.style.width = `${100 - progressPercentage}%`;
             progressText.textContent = `Nächster Hinweis in ${secondsLeftForHint}s`;
-
-            if (secondsLeftForHint <= 0) {
-                 secondsLeftForHint = HINT_INTERVAL_SECONDS;
-            }
+            if (secondsLeftForHint <= 0) secondsLeftForHint = HINT_INTERVAL_SECONDS;
             if (revealedHints >= hintBoxes.length) {
                 clearInterval(progressTimer);
                 progressBar.style.width = '0%';
@@ -164,26 +157,41 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     }
     
-    // Funktion zum Prüfen der Antwort
+    // NEU: Funktion zur Normalisierung von Text (Umlaute, Groß-/Kleinschreibung)
+    function normalizeString(str) {
+        return str
+            .toLowerCase()
+            .replace(/ä/g, 'ae')
+            .replace(/ö/g, 'oe')
+            .replace(/ü/g, 'ue')
+            .replace(/ß/g, 'ss')
+            .trim();
+    }
+    
+    // Funktion zum Prüfen der Antwort (aktualisiert)
     function checkSolution() {
         const station = stations[currentStationIndex];
-        const userInput = solutionInput.value.trim().toLowerCase();
+        const userInput = solutionInput.value;
+
+        // NEU: Cheating-Möglichkeit für Testzwecke ;)
+        const isCheating = userInput === '47110815';
         
-        if (userInput === station.loesungswort.toLowerCase()) {
-            // Richtige Antwort
+        // NEU: Normalisierter Vergleich
+        const isCorrect = normalizeString(userInput) === normalizeString(station.loesungswort);
+
+        if (isCorrect || isCheating) {
+            // Richtige Antwort oder Cheat-Code
             currentStationIndex++;
             loadStation(currentStationIndex);
         } else {
             // Falsche Antwort
             solutionInput.style.animation = 'shake 0.5s';
-            // Animation nach Ablauf entfernen
             setTimeout(() => {
                 solutionInput.style.animation = '';
             }, 500);
         }
     }
     
-    // Funktion zum Beenden des Spiels
     function endGame() {
         stopStopwatch();
         stationContent.style.display = 'none';
@@ -191,15 +199,10 @@ document.addEventListener('DOMContentLoaded', () => {
         finalTimeElement.textContent = stopwatchElement.textContent;
     }
 
-    // Event Listener für den Weiter-Button
     submitButton.addEventListener('click', checkSolution);
-    // Erlaubt das Absenden mit der Enter-Taste
     solutionInput.addEventListener('keyup', (event) => {
-        if (event.key === 'Enter') {
-            checkSolution();
-        }
+        if (event.key === 'Enter') checkSolution();
     });
 
-    // Das Spiel initialisieren
     fetchStations();
 });

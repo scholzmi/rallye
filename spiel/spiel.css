@@ -56,6 +56,16 @@ body {
     color: #111827;
 }
 
+/* NEU: Stile für das Stationsbild */
+.station-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    object-fit: cover;
+}
+
+
 #station-description {
     margin-top: 0;
     margin-bottom: 2rem;

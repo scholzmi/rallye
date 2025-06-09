@@ -2,21 +2,34 @@
     {
         "stationsname": "Der Start: Schulhof",
         "beschreibung": "Findet den großen, alten Baum in der Mitte des Schulhofs. Darunter ist der erste Hinweis versteckt, der euch den Weg zur nächsten Station weist.",
+        "stationsbild": "baum_station.jpg",
         "hinweis1": "Ich habe eine Krone, bin aber kein König.",
         "hinweis2": "Meine Blätter tanzen im Wind.",
         "hinweis3": "Im Sommer spende ich Schatten.",
         "hinweis4": "Vögel nisten gerne in meinen Ästen.",
         "hinweis5": "Die Lösung ist das, was ich bin.",
-        "loesungswort": "baum"
+        "loesungswort": "Baum"
     },
     {
         "stationsname": "Die alte Brücke",
         "beschreibung": "Geht über die kleine Holzbrücke am Bach. Zählt die Holzplanken und schaut auf der anderen Seite nach einem Zeichen.",
+        "stationsbild": "bruecke_station.jpg",
         "hinweis1": "Ich führe über Wasser, ohne nass zu werden.",
         "hinweis2": "Ich verbinde zwei Ufer.",
         "hinweis3": "Man kann mich überqueren.",
         "hinweis4": "Ich bin aus Holz gebaut.",
         "hinweis5": "Die Lösung ist das, was ich bin.",
-        "loesungswort": "brücke"
+        "loesungswort": "Brücke"
+    },
+    {
+        "stationsname": "Geheimes Versteck",
+        "beschreibung": "Sucht den Ort, an dem sich die Füchse gute Nacht sagen. Dort findet ihr das finale Lösungswort.",
+        "stationsbild": "",
+        "hinweis1": "Hier ist es sehr ruhig.",
+        "hinweis2": "Man hört nur die Geräusche der Natur.",
+        "hinweis3": "Es riecht nach Moos und feuchter Erde.",
+        "hinweis4": "Ein guter Ort für ein Picknick.",
+        "hinweis5": "Die Lösung ist der Name unseres Dorfes.",
+        "loesungswort": "Willinghusen"
     }
 ]
