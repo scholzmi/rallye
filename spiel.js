@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const stopwatchElement = document.getElementById('stopwatch');
     const stationNameElement = document.getElementById('station-name');
     const stationImageElement = document.getElementById('station-image');
+    const imageErrorElement = document.getElementById('image-error'); // NEU
     const stationDescriptionElement = document.getElementById('station-description');
     const hintBoxes = [
         document.getElementById('hint-1'),
@@ -16,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressText = document.getElementById('progress-text');
     const solutionInput = document.getElementById('solution-input');
     const submitButton = document.getElementById('submit-button');
-    const reportErrorButton = document.getElementById('report-error-button'); // NEU
+    const reportErrorButton = document.getElementById('report-error-button');
     const stationContent = document.getElementById('station-content');
     const endScreen = document.getElementById('end-screen');
     const finalTimeElement = document.getElementById('final-time');
@@ -79,11 +80,22 @@ document.addEventListener('DOMContentLoaded', () => {
         stationNameElement.textContent = station.stationsname;
         stationDescriptionElement.textContent = station.beschreibung;
         
-        stationImageElement.style.display = (station.stationsbild && station.stationsbild.trim() !== '') ? 'block' : 'none';
-        if (stationImageElement.style.display === 'block') {
+        // Bild- und Fehlermeldungslogik
+        imageErrorElement.style.display = 'none'; // Fehlermeldung initial ausblenden
+
+        if (station.stationsbild && station.stationsbild.trim() !== '') {
+            stationImageElement.style.display = 'block'; // Bildcontainer anzeigen
             stationImageElement.src = `img/${station.stationsbild}`;
+        } else {
+            stationImageElement.style.display = 'none'; // Bildcontainer ausblenden, wenn kein Bild definiert ist
         }
-        stationImageElement.onerror = () => { stationImageElement.src = 'img/hintergrund_startseite.jpg'; };
+
+        // NEU: on-error-Handler für das Bild
+        stationImageElement.onerror = () => {
+            stationImageElement.style.display = 'none'; // Defektes Bild ausblenden
+            imageErrorElement.textContent = `Bild nicht gefunden. Erwarteter Dateiname: "${station.stationsbild}" im "img"-Ordner.`;
+            imageErrorElement.style.display = 'block'; // Fehlermeldung anzeigen
+        };
 
         revealedHints = 0;
         hintBoxes.forEach((box, i) => {
@@ -177,12 +189,10 @@ document.addEventListener('DOMContentLoaded', () => {
         triggerLargeFireworks();
     }
 
-    // NEU: Funktion, um eine Fehler-E-Mail zu erstellen
     function reportError() {
         if (stations.length > 0 && stations[currentStationIndex]) {
             const stationName = stations[currentStationIndex].stationsname;
             const subject = `Willinghusen Rallye FEHLER: ${stationName}`;
-            // Das E-Mail-Programm des Nutzers wird mit dem vorbereiteten Betreff geöffnet
             window.location.href = `mailto:scholzm@me.com?subject=${encodeURIComponent(subject)}`;
         }
     }
@@ -223,6 +233,8 @@ document.addEventListener('DOMContentLoaded', () => {
         createFirework(window.innerWidth / 2, window.innerHeight / 3, 50, `hsl(${Math.random() * 360}, 100%, 70%)`);
     }
 
+
+
     function triggerLargeFireworks() {
         const w = window.innerWidth, h = window.innerHeight;
         createFirework(w * 0.2, h * 0.3, 100, 'gold');
@@ -240,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- INITIALISIERUNG ---
     submitButton.addEventListener('click', checkSolution);
-    reportErrorButton.addEventListener('click', reportError); // NEU
+    reportErrorButton.addEventListener('click', reportError);
     solutionInput.addEventListener('keyup', (event) => { if (event.key === 'Enter') checkSolution(); });
     
     fireworksCanvas.width = window.innerWidth;

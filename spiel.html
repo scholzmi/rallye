@@ -31,6 +31,8 @@
             <h2 id="station-name">Station wird geladen...</h2>
             
             <img id="station-image" src="" alt="Bild der Station" class="station-image">
+            <!-- NEU: Platzhalter für die Bild-Fehlermeldung -->
+            <p id="image-error" class="image-error-text" style="display: none;"></p>
             
             <p id="station-description"></p>
 
@@ -51,7 +53,6 @@
             <div class="input-area">
                 <input type="text" id="solution-input" placeholder="Lösungswort eingeben...">
                 <button id="submit-button">Weiter</button>
-                <!-- NEU: Fehler melden Button -->
                 <button id="report-error-button" class="report-button">Fehler melden</button>
             </div>
         </main>
