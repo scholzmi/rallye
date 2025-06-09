@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
             stationImageElement.style.display = 'none'; // Bildcontainer ausblenden, wenn kein Bild definiert ist
         }
 
-        // NEU: on-error-Handler für das Bild
+        // on-error-Handler für das Bild
         stationImageElement.onerror = () => {
             stationImageElement.style.display = 'none'; // Defektes Bild ausblenden
             imageErrorElement.textContent = `Bild nicht gefunden. Erwarteter Dateiname: "${station.stationsbild}" im "img"-Ordner.`;

@@ -19,7 +19,7 @@ body {
     right: 0;
     bottom: 0;
     /* WICHTIG: Pfad zum Bild angepasst */
-    background-image: url('img/hintergrund_startseite.jpg');
+    background-image: url('img/00_startseite.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
