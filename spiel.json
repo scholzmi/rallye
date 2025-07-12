@@ -225,13 +225,13 @@
         "beschreibung": "In der Gegend befindet sich noch etwas interessanates",
         "stationsbild": "90_Tischlererrei.jpg",
         "hintIntervalSeconds": 50,
-        "hinweis1": "Schaut ausschau nach etwas großen",
+        "hinweis1": "Haltet Ausschau nach etwas Großem",
         "hinweis2": "Es handelt sich um ein Gebäude",
         "hinweis3": "Ein Handwerk",
-        "hinweis4": "Wie heißt die Tischlererrei",
+        "hinweis4": "Wie heißt die Tischlererrei?",
         "hinweis5": "Tischlerrei Flemming",
         "loesungswort": "Tischlerrei Flemming",
-        "loesungswort2": ""
+        "loesungswort2": "Flemming"
     },
     {
         "stationsname": "Kleine Waren",
