@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const initializeGame = async () => {
         try {
             const configResponse = await fetch('config.json');
-            config = configResponse.ok ? await configResponse.json() : { hintIntervalSeconds: 120, revealSolutionDelaySeconds: 30 };
+            config = configResponse.ok ? await configResponse.json() : { revealSolutionDelaySeconds: 30 };
             const stationsResponse = await fetch('spiel.json');
             if (!stationsResponse.ok) throw new Error('Spieldaten (spiel.json) konnten nicht geladen werden.');
             stations = await stationsResponse.json();
@@ -122,7 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
         revealHint();
         if (revealedHints >= hintBoxes.length) return;
         
-        const HINT_INTERVAL = config.hintIntervalSeconds || 120;
+        const station = stations[currentStationIndex];
+        const HINT_INTERVAL = station.hintIntervalSeconds || 120;
         secondsLeftForHint = HINT_INTERVAL;
         
         // Initialer Zustand des Balkens
