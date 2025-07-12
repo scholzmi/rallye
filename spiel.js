@@ -119,28 +119,52 @@ document.addEventListener('DOMContentLoaded', () => {
     const startHintTimer = () => {
         clearInterval(hintTimer);
         clearInterval(progressTimer);
-        revealHint();
-        if (revealedHints >= hintBoxes.length) return;
-        
+
         const station = stations[currentStationIndex];
-        const HINT_INTERVAL = station.hintIntervalSeconds || 120;
-        secondsLeftForHint = HINT_INTERVAL;
-        
-        // Initialer Zustand des Balkens
-        progressBar.style.width = '100%';
-        
-        hintTimer = setInterval(() => {
+        const fusswegSeconds = station.Fussweg || 0;
+
+        const startRegularHintCycle = () => {
             revealHint();
+            if (revealedHints >= hintBoxes.length) return;
+            
+            const HINT_INTERVAL = station.hintIntervalSeconds || 120;
             secondsLeftForHint = HINT_INTERVAL;
-        }, HINT_INTERVAL * 1000);
-        
-        progressTimer = setInterval(() => {
-            secondsLeftForHint--;
-            // KORREKTUR: Breite auf Basis der verbleibenden Zeit berechnen
-            progressBar.style.width = `${(secondsLeftForHint / HINT_INTERVAL) * 100}%`;
+            
+            progressBar.style.width = '100%';
             progressText.textContent = `Nächster Hinweis in ${secondsLeftForHint}s`;
-            if (secondsLeftForHint <= 0) secondsLeftForHint = HINT_INTERVAL;
-        }, 1000);
+            
+            hintTimer = setInterval(() => {
+                revealHint();
+                secondsLeftForHint = HINT_INTERVAL;
+            }, HINT_INTERVAL * 1000);
+            
+            progressTimer = setInterval(() => {
+                secondsLeftForHint--;
+                progressBar.style.width = `${(secondsLeftForHint / HINT_INTERVAL) * 100}%`;
+                progressText.textContent = `Nächster Hinweis in ${secondsLeftForHint}s`;
+                if (secondsLeftForHint <= 0) {
+                    secondsLeftForHint = HINT_INTERVAL;
+                }
+            }, 1000);
+        };
+
+        if (revealedHints === 0 && fusswegSeconds > 0) {
+            let secondsLeft = fusswegSeconds;
+            progressText.textContent = `Zeit für den Fußweg: ${secondsLeft}s`;
+            progressBar.style.width = '100%';
+
+            progressTimer = setInterval(() => {
+                secondsLeft--;
+                progressBar.style.width = `${(secondsLeft / fusswegSeconds) * 100}%`;
+                progressText.textContent = `Zeit für den Fußweg: ${secondsLeft}s`;
+                if (secondsLeft <= 0) {
+                    clearInterval(progressTimer);
+                    startRegularHintCycle();
+                }
+            }, 1000);
+        } else {
+            startRegularHintCycle();
+        }
     };
 
     const startRevealSolutionTimer = () => {
@@ -148,12 +172,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let secondsLeft = REVEAL_DELAY;
         progressBar.classList.add('reveal-mode');
 
-        // Initialer Zustand des Balkens
         progressBar.style.width = '100%';
 
         progressTimer = setInterval(() => {
             secondsLeft--;
-            // KORREKTUR: Breite auf Basis der verbleibenden Zeit berechnen
             progressBar.style.width = `${(secondsLeft / REVEAL_DELAY) * 100}%`;
             progressText.textContent = `Lösung wird in ${secondsLeft}s angezeigt...`;
             if(secondsLeft <= 0) {
