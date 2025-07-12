@@ -94,7 +94,7 @@
         "stationsname": "Das Schild",
         "beschreibung": "Begebt euch an den Ort wo das Foto entstanden ist",
         "stationsbild": "30_SpiegelSchild.jpg",
-        "hintIntervalSeconds": 90,
+        "hintIntervalSeconds": 30,
         "hinweis1": "Schaue dir die Schilder in deiner Umgebung genauer an",
         "hinweis2": "Gucke in den Spiegel",
         "hinweis3": "Schaut euch die Schilder, die ihr im Spiegel seht an",
