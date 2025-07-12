@@ -189,7 +189,7 @@
         "hinweis1": "Gehe in den Tunnel und guckt euch um. ihr müsst nicht die Straße betreten. ",
         "hinweis2": "Schaut euch die Graffiti an",
         "hinweis3": "Es ist ein großes Graffiti",
-        "hinweis4": "Wer fordert Dich zum Mitmachen auf. ",
+        "hinweis4": "Wer fordert Dich zum Mitmachen auf?",
         "hinweis5": "Feuerwehr",
         "loesungswort": "Feuerwehr",
         "loesungswort2": ""
@@ -215,10 +215,10 @@
         "hinweis1": "Ihr müsst etwas rechnen",
         "hinweis2": "Strecken",
         "hinweis3": "Barsbüttel, Jenfeld, Osteinbek, Ahrensburg und Billstedt",
-        "hinweis4": "Rechnet die Strecken der genannten Orte zusammen",
+        "hinweis4": "Addiert die Streckenangaben der genannten Orte.",
         "hinweis5": "36,7",
         "loesungswort": "36,7",
-        "loesungswort2": ""
+        "loesungswort2": "36.7"
     },
     {
         "stationsname": "Alte Dorfstraße",
