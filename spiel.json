@@ -24,8 +24,8 @@
         "hinweis3": "Ich stehe auf einem Fahrzeug.",
         "hinweis4": "Ich bin ein Nummernschild.",
         "hinweis5": "Mein Nummerschild ist an dem grossen Feuerwehrfahrzeug.",
-        "loesungswort": "OD-2557",
-        "loesungswort2": "OD2557"
+        "loesungswort": "OD-2257",
+        "loesungswort2": "OD2257"
     },
     {
         "stationsname": "Das Klettergerüst",
@@ -116,7 +116,7 @@
         "beschreibung": "Entlang des Weges sollte ein kleines gelbes Schild zu finden sein",
         "stationsbild": "27_KleinesGelbesSchild.jpg",
         "Fussweg": 60,
-        "hintIntervalSeconds": 90,
+        "hintIntervalSeconds": 15,
         "hinweis1": "Finde mich",
         "hinweis2": "Oben rechts in der Ecke ist eine 3-stellige Zahl",
         "hinweis3": "... wenn Du nicht weiter kommst, musst Du bis zum 5. Hinweis warten ...",
